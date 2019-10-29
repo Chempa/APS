@@ -21,7 +21,7 @@
 
 	}else{
 		header('Content-type: application/json');
-        	$RET_DATA = ['success'=>0, 'message'=>'invalid or wrong token'];
+        	$RET_DATA = ['success'=>0, 'desc'=>'invalid or wrong token'];
 	    	echo json_encode($RET_DATA);
         	return;
 	}
@@ -78,7 +78,8 @@
 		"travelDistance"=>$decoded_data[0]->travelDistance,
 		"travelDuration"=>$decoded_data[0]->travelDuration,
 		"distanceUnit"=>"miles",
-		"durationUnit"=>"minutes"
+		"durationUnit"=>"minutes",
+		"desc"=>"ok"
 	);
 	echo json_encode($RET_DATA);
 ?>
