@@ -13,6 +13,7 @@
         // ALTERNATE METHOD
         $data['success'] = 1;
         $data['token'] = $a->ustr;
+	$data['desc'] = 'login successful';
     }else{
         // MY METHOD
         // $data = ['success' => 0 ,'token'=>'null'];
@@ -20,6 +21,7 @@
         // ALTERNATE METHOD
         $data['success'] = 0;
         $data['token'] = "";
+	$data['desc'] = 'login failed';
     }
 	echo json_encode($data);
 ?>
