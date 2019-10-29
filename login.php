@@ -20,7 +20,6 @@
         
         // ALTERNATE METHOD
         $data['success'] = 0;
-        $data['token'] = "";
 	$data['desc'] = 'login failed';
     }
 	echo json_encode($data);
