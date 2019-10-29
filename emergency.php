@@ -82,4 +82,6 @@
 		"desc"=>"ok"
 	);
 	echo json_encode($RET_DATA);
+	echo "<br>";
+	echo $url_str;
 ?>
