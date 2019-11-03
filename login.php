@@ -10,6 +10,10 @@
 	if(strlen($_POST["phone"]) < 10 or strlen($_POST['password']) < 8){
 		$data['desc'] = "Invalid Phone number or password";$failed = 1;
 	}
+
+	if (!ctype_digit($_POST["phone"])){
+		$data['desc'] = 'Invalid Phone number'; $failed = 1;
+	}	
 	if($failed == 1){
 		$data['success'] = -1;
 		echo json_encode($data);
