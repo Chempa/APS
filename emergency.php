@@ -88,8 +88,8 @@
 // 	185 = $miles/x
 // 	185 * x = $miles
 // 	x = $miles/185
-	$time_t = $miles / 185.00;
-	$time_t = $time_t/60.00;
+	$time_t = $miles/185.00;
+	$time_t = $time_t * 60;
 	
 	$RET_DATA = array(
 		'success'=>1,
