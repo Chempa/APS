@@ -3,6 +3,28 @@
 	include("models/distance_api_mod.php");
 	include("models/paramedic_stations.php");
 	include("models/users.php");
+
+	function distance($lat1, $lon1, $lat2, $lon2, $unit) {
+	  if (($lat1 == $lat2) && ($lon1 == $lon2)) {
+	    return 0;
+	  }
+	  else {
+	    $theta = $lon1 - $lon2;
+	    $dist = sin(deg2rad($lat1)) * sin(deg2rad($lat2)) +  cos(deg2rad($lat1)) * cos(deg2rad($lat2)) * cos(deg2rad($theta));
+	    $dist = acos($dist);
+	    $dist = rad2deg($dist);
+	    $miles = $dist * 60 * 1.1515;
+	    $unit = strtoupper($unit);
+
+	    if ($unit == "K") {
+	      return ($miles * 1.609344);
+	    } else if ($unit == "N") {
+	      return ($miles * 0.8684);
+	    } else {
+	      return $miles;
+	    }
+	  }
+	}
 // GET PARAMETERS FROM REQUEST
 	// number,password,
 
@@ -48,9 +70,43 @@
 	$my_orig = [];
 	$my_dest = [];
 	array_push($my_orig,$__LAT,$__LON);
+	$min_distance = 9999999999;
+	$min_index = -1;
 	for ($i=0; $i < count($all_stations); $i++) { 
-		array_push($my_dest,$all_stations[$i]->latitude,$all_stations[$i]->longitude);
+// 		array_push($my_dest,$all_stations[$i]->latitude,$all_stations[$i]->longitude);
+		$miles = distance($__LAT, $LON, $all_stations[$i]->latitude, $all_stations[$i]->longitude, "miles");
+		if($miles < $min_distance){
+			$min_index = $i;
+			$min_distance = $miles;
+		}
 	}
+	
+// 	185mph
+// 	1hour = 185 miles;
+// 	?     = x;
+// 	s = d/t
+// 	185 = $miles/x
+// 	185 * x = $miles
+// 	x = $miles/185
+	$time_t = $miles / 185.00;
+	$time_t = $time_t/60.00;
+	
+	$RET_DATA = array(
+		'success'=>1,
+		"longitude"=>(float)$all_stations[$min_index]->longitude,
+		"latitude"=>(float)$all_stations[$min_index]->latitude,
+		"travelDistance"=>(float)$miles,
+		"travelDuration"=>(float)$time_t,
+		"distanceUnit"=>"miles",
+		"durationUnit"=>"minutes",
+		"desc"=>"ok"
+	);
+	
+	echo json_encode($RET_DATA);
+	
+	
+	
+/*
 	// MAKE CALLS TO DISTANCE MODED_API
 	api_addOrigin($my_orig);
 	api_addDestination($my_dest);
@@ -84,4 +140,6 @@
 	echo json_encode($RET_DATA);
 	echo "<br>";
 	echo $url_str;
+	
+	*/
 ?>
